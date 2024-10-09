@@ -1,8 +1,16 @@
 #include "ls.h"
 
 // Function to compare two file stats based on modification time
-int compare_time(const struct stat *a, const struct stat *b) {
-    return b->st_mtime - a->st_mtime;
+int compare_time(const void *a, const void *b) {
+    const struct stat *stat_a = (const struct stat *)a;
+    const struct stat *stat_b = (const struct stat *)b;
+
+    // Önce modifikasyon zamanlarına göre karşılaştırma yap
+    if (stat_a->st_mtime > stat_b->st_mtime) return -1;
+    if (stat_a->st_mtime < stat_b->st_mtime) return 1;
+
+    // Modifikasyon zamanları aynıysa 0 döndür
+    return 0;
 }
 
 // İki elemanı yer değiştirmek için kullanılan yardımcı fonksiyon
@@ -31,7 +39,6 @@ int partition(void *base, size_t size, int low, int high, int (*compar)(const vo
     return i + 1; // Pivot'un yeni indeksini döndür
 }
 
-// Hızlı sıralama algoritmasının ana mantığını içeren fonksiyon
 void ft_qsort(void *base, size_t num, size_t size, int (*compar)(const void *, const void *)) {
     if (num < 2) return; // Sıralanacak eleman yoksa çık
 
@@ -39,11 +46,12 @@ void ft_qsort(void *base, size_t num, size_t size, int (*compar)(const void *, c
     int high = num - 1; // Dizi sonu
     int pivot_index; // Pivot indeksini tutmak için
 
-    // Kendi başına sıralama fonksiyonu
-    while (low < high) {
-        pivot_index = partition(base, size, low, high, compar); // Diziyi böl
-        // Recursive olarak sol ve sağ parçaları sıralıyoruz
-        ft_qsort(base, pivot_index, size, compar); // Sol parçayı sırala
-        low = pivot_index + 1; // Sağ parçayı sırala
-    }
+    // Pivot indeksini al ve diziyi böl
+    pivot_index = partition(base, size, low, high, compar);
+
+    // Sol parçayı sırala
+    ft_qsort(base, pivot_index, size, compar);
+    
+    // Sağ parçayı sırala
+    ft_qsort((char *)base + (pivot_index + 1) * size, high - pivot_index, size, compar);
 }

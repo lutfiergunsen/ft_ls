@@ -1,16 +1,15 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 SRC = ls.c long_form.c my_qsort.c my_scandir.c
-OBJ = $(SRC:.c=.o)
-NAME = ft_ls
+NAME = ls
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
+$(NAME):
+	$(CC) $(CFLAGS) $(SRC) -o $(NAME)
 
 clean:
-	rm -f $(OBJ)
+	rm -f $(NAME)
 
 fclean: clean
 	rm -f $(NAME)

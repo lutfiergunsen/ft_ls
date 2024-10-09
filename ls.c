@@ -19,7 +19,8 @@ void list_directory(const char *path, int show_all, int long_format, int recursi
 
     // Sort by time if requested
     if (sort_time) {    // zaman sıralaması
-        ft_qsort(file_stats, n, sizeof(struct stat), (int (*)(const void *, const void *))compare_time);   
+        ft_qsort(file_stats, n, sizeof(struct stat), (int (*)(const void *, const void *))compare_time);
+        printf("-t çalıştı gibi\n");
     }
 
     for (int i = 0; i < n; i++) {   // dosya adlarını yazdır
