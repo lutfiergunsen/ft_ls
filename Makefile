@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
-SRC = ls.c
+SRC = ls.c long_form.c my_qsort.c my_scandir.c
 OBJ = $(SRC:.c=.o)
 NAME = ft_ls
 
